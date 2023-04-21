@@ -1,52 +1,54 @@
-import java.io.IOException;
-import java.util.Scanner;
 import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+        // Lectura del archivo Spanish.txt
+        List<String> spanishLines = new ReadFile("Spanish.txt").readLines();
+
+        // Construcción del diccionario
+        Map<String, String> dictionary;
         Scanner scanner = new Scanner(System.in);
-
-        // Seleccionar tipo de árbol
-        System.out.println("Seleccione el tipo de árbol para el diccionario:");
-        System.out.println("1. AVL");
-        System.out.println("2. Red-Black");
-        int treeType = scanner.nextInt();
-
-        String dictionaryType;
-        if (treeType == 1) {
-            dictionaryType = "AVL";
-        } else if (treeType == 2) {
-            dictionaryType = "RBT";
-        } else {
-            System.out.println("Tipo de árbol inválido");
-            return;
+        System.out.println("¿Qué árbol desea utilizar para el diccionario? (1: Red-Black Tree, 2: AVL Tree)");
+        int treeChoice = scanner.nextInt();
+        switch (treeChoice) {
+            case 1:
+                dictionary = new RedBlackTree<>();
+                break;
+            case 2:
+                dictionary = new AVLTree<>();
+                break;
+            default:
+                System.out.println("Opción inválida. Se utilizará Red-Black Tree por defecto.");
+                dictionary = new RedBlackTree<>();
         }
 
-        // Crear diccionario y cargar archivo
-        Dictionary dictionary = new Dictionary(dictionaryType);
-        try {
-            dictionary.loadDictionary("Spanish.txt");
-        } catch (IOException e) {
-            System.out.println("Error al cargar el diccionario: " + e.getMessage());
-            return;
+        for (String line : spanishLines) {
+            String[] parts = line.split(" ");
+            String englishWord = parts[0].toLowerCase();
+            String spanishWord = parts[1].toLowerCase();
+            dictionary.put(englishWord, spanishWord);
         }
 
-        // Pedir oración para traducir
-        System.out.print("Ingrese la oración que desea traducir: ");
-        scanner.nextLine(); // Consumir la línea en blanco después de nextInt()
-        String sentence = scanner.nextLine();
-
-        // Traducir oración
-        String[] words = sentence.split("\\s+");
-        StringBuilder translation = new StringBuilder();
-        for (String word : words) {
-            translation.append(dictionary.translate(word));
-            translation.append(" ");
+        // Lectura del archivo texto.txt y traducción
+        List<String> textLines = new ReadFile("texto.txt").readLines();
+        for (String line : textLines) {
+            String[] words = line.split(" ");
+            for (String word : words) {
+                String englishWord = word.toLowerCase();
+                String spanishWord = dictionary.get(englishWord);
+                if (spanishWord != null) {
+                    System.out.print(spanishWord + " ");
+                } else {
+                    System.out.print("*" + word + "* ");
+                }
+            }
+            System.out.println();
         }
 
-        // Imprimir traducción
-        System.out.println("Traducción: " + translation.toString().trim());
+        scanner.close();
     }
 }
