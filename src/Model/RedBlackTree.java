@@ -1,8 +1,10 @@
+package Model;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class AVLTree<K extends Comparable<K>, V> implements Map<K, V> {
+public class RedBlackTree<K extends Comparable<K>, V> implements Map<K, V> {
     private Node root;
     private int size;
 
@@ -71,13 +73,12 @@ public class AVLTree<K extends Comparable<K>, V> implements Map<K, V> {
         private V value;
         private Node left;
         private Node right;
-        private int height;
+        private boolean isRed;
 
         public Node(K key, V value) {
             this.key = key;
             this.value = value;
-            this.height = 1;
+            this.isRed = true;
         }
     }
 }
-

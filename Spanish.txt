@@ -1,0 +1,30 @@
+Cat, Gato
+Dog, Perro
+House, Casa
+Car, Coche
+Tree, Árbol
+Book, Libro
+Water, Agua
+Sun, Sol
+Moon, Luna
+Food, Comida
+Love, Amor
+Friend, Amigo
+Family, Familia
+School, Escuela
+Music, Música
+Time, Tiempo
+Money, Dinero
+Health, Salud
+Happiness, Felicidad
+Work, Trabajo
+
+
+
+
+
+
+
+
+
+
